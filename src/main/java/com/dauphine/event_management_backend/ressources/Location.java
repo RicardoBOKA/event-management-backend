@@ -1,9 +1,15 @@
 package com.dauphine.event_management_backend.ressources;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Column;
+
 public class Location {
     private String addressLine;
+
     private String city;
+
     private String postalCode;
+
     private String country;
 
     public String getAddressLine() {
@@ -36,5 +42,20 @@ public class Location {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return addressLine + ", " + city + ", " + postalCode + ", " + country;
+    }
+
+    public static Location fromString(String locationString) {
+        String[] parts = locationString.split(", ");
+        Location location = new Location();
+        location.setAddressLine(parts[0]);
+        location.setCity(parts[1]);
+        location.setPostalCode(parts[2]);
+        location.setCountry(parts[3]);
+        return location;
     }
 }

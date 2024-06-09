@@ -1,24 +1,50 @@
 package com.dauphine.event_management_backend.models;
 
 import com.dauphine.event_management_backend.ressources.Location;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jdk.jfr.Relational;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+@Entity
+@Table(name = "events")
 public class Event {
+    @Id
+    @Column(name = "event_id", nullable = false)
     private UUID eventId;
+
+    @Column(name = "event_name")
     private String eventName;
+
+    @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
+
+    @Column(name = "start_event", nullable = false)
     private LocalDateTime startEvent;
+    @Column(name = "end_event", nullable = false)
     private LocalDateTime endEvent;
-    private Location location;
+
+    @Column(name = "location")
+    private String location;
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    private UUID organizerId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "event")
+    private Set<Registration> registrations = new HashSet<>();
+
 
     public UUID getEventId() {
         return eventId;
     }
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     public LocalDateTime getStartEvent() {
         return startEvent;
     }
@@ -27,6 +53,7 @@ public class Event {
         this.startEvent = startEvent;
     }
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     public LocalDateTime getEndEvent() {
         return endEvent;
     }
@@ -47,6 +74,7 @@ public class Event {
         this.eventName = eventName;
     }
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -55,11 +83,11 @@ public class Event {
         this.createdDate = createdDate;
     }
 
-    public Location getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -71,11 +99,11 @@ public class Event {
         this.description = description;
     }
 
-    public UUID getOrganizerId() {
-        return organizerId;
+    public User getUser() {
+        return user;
     }
 
-    public void setOrganizerId(UUID organizerId) {
-        this.organizerId = organizerId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

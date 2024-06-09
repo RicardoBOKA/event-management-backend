@@ -1,6 +1,7 @@
 package com.dauphine.event_management_backend.services;
 
 import com.dauphine.event_management_backend.exceptions.EventNotFoundException;
+import com.dauphine.event_management_backend.exceptions.RegistrationNotFoundException;
 import com.dauphine.event_management_backend.exceptions.UserNotFoundException;
 import com.dauphine.event_management_backend.models.Registration;
 
@@ -14,7 +15,7 @@ public interface RegistrationService {
     Registration createRegistration(UUID userId, UUID eventId) throws UserNotFoundException, EventNotFoundException;
 
     // Annuler une inscription
-    void cancelRegistration(UUID registrationId);
+    void cancelRegistration(UUID registrationId) throws RegistrationNotFoundException;
 
     // Récupérer une inscription par son ID
     Optional<Registration> getRegistrationById(UUID registrationId);
@@ -26,5 +27,5 @@ public interface RegistrationService {
     List<Registration> getRegistrationsByUserId(UUID userId);
 
     // Vérifier si un utilisateur est inscrit à un événement spécifique
-    boolean isUserRegistered(UUID userId, UUID eventId);
+    boolean isUserRegistered(UUID userId, UUID eventId) throws UserNotFoundException, EventNotFoundException;
 }

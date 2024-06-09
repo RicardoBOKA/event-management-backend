@@ -15,7 +15,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, UUID
     @Query("""
         SELECT r
         FROM Registration r
-        WHERE r.eventId = :eventId
+        WHERE r.event.eventId = :eventId
     """)
     List<Registration> getRegistrationsByEventId(@Param("eventId") UUID eventId);
 
@@ -23,7 +23,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, UUID
     @Query("""
         SELECT r
         FROM Registration r
-        WHERE r.userId = :userId
+        WHERE r.user.userId = :userId
     """)
     List<Registration> getRegistrationsByUserId(@Param("userId") UUID userId);
 
@@ -31,7 +31,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, UUID
     @Query("""
         SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
         FROM Registration r
-        WHERE r.userId = :userId AND r.eventId = :eventId
+        WHERE r.user.userId = :userId AND r.event.eventId = :eventId
     """)
     boolean isUserRegistered(@Param("userId") UUID userId, @Param("eventId") UUID eventId);
 }

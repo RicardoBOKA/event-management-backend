@@ -9,11 +9,13 @@ import com.dauphine.event_management_backend.repository.EventRepository;
 import com.dauphine.event_management_backend.repository.FeedbackRepository;
 import com.dauphine.event_management_backend.repository.UserRepository;
 import com.dauphine.event_management_backend.services.FeedbackService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
@@ -26,18 +28,18 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.eventRepository = eventRepository;
     }
     @Override
-    public Feedback addFeedback(Feedback feedback) throws EventNotFoundException, UserNotFoundException {
+    public Feedback addFeedback(Event event, User user, String comment, Short rating) throws EventNotFoundException, UserNotFoundException {
         // Check if the event exists and is completed
-        Event event = eventRepository.findById(feedback.getEventId())
-                .orElseThrow(() -> new EventNotFoundException(feedback.getEventId()));
+        Event e = eventRepository.findById(event.getEventId())
+                .orElseThrow(() -> new EventNotFoundException(event.getEventId()));
         if (event.getEndEvent().isAfter(java.time.LocalDateTime.now())) {
             throw new IllegalStateException("Feedback cannot be added before the event is completed.");
         }
-
         // Check if the user exists
-        User user = userRepository.findById(feedback.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(feedback.getUserId()));
+        User u = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(user.getUserId()));
 
+        Feedback feedback = new Feedback(event, user, comment, rating);
         return feedbackRepository.save(feedback);
     }
 
@@ -57,10 +59,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Optional<Feedback> updateFeedback(UUID feedbackId, Feedback updatedFeedback) {
+    public Optional<Feedback> updateFeedback(UUID feedbackId, String comment, Short rating) {
         return feedbackRepository.findById(feedbackId).map(existingFeedback -> {
-            existingFeedback.setComment(updatedFeedback.getComment());
-            existingFeedback.setRating(updatedFeedback.getRating());
+            existingFeedback.setComment(comment);
+            existingFeedback.setRating(rating);
             return feedbackRepository.save(existingFeedback);
         });
     }

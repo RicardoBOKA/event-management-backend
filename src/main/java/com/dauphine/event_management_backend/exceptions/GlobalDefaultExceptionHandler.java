@@ -13,7 +13,8 @@ public class GlobalDefaultExceptionHandler {
 
     @ExceptionHandler({
             EventNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            RegistrationNotFoundException.class
     })
     public ResponseEntity<String> handleNotFounException(Exception ex) {
         logger.warn("[NOT FOUND] {}", ex.getMessage());

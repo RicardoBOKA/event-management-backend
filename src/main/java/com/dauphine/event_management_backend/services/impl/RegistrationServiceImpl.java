@@ -9,11 +9,12 @@ import com.dauphine.event_management_backend.repository.EventRepository;
 import com.dauphine.event_management_backend.repository.RegistrationRepository;
 import com.dauphine.event_management_backend.repository.UserRepository;
 import com.dauphine.event_management_backend.services.RegistrationService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Service
 public class RegistrationServiceImpl implements RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
@@ -38,8 +39,8 @@ public class RegistrationServiceImpl implements RegistrationService {
         // Create the registration
         Registration registration = new Registration();
         registration.setRegistrationid(UUID.randomUUID());
-        registration.setUserId(userId);
-        registration.setEventId(eventId);
+        registration.setUser(user);
+        registration.setEvent(event);
         registration.setRegistrationDate(java.time.LocalDateTime.now());
         return registrationRepository.save(registration);
     }

@@ -1,14 +1,18 @@
 package com.dauphine.event_management_backend.services.impl;
 
+import com.dauphine.event_management_backend.exceptions.UserNotFoundException;
 import com.dauphine.event_management_backend.models.User;
 import com.dauphine.event_management_backend.repository.UserRepository;
 import com.dauphine.event_management_backend.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -20,17 +24,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
+    public User createUser(String userName, String email, String password) {
+        User newUser = new User();
+
+        newUser.setUserId(UUID.randomUUID());
+        newUser.setUserName(userName);
+        newUser.setEmail(email);
+        newUser.setPassword(password);
+
         // Encrypt the password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        return userRepository.save(newUser);
     }
 
 
     @Override
-    public User updateUser(UUID userId, String userName) {
+    public User updateUser(UUID userId, String userName) throws UserNotFoundException {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
         user.setUserName(userName);
         return userRepository.save(user);
     }
@@ -41,8 +52,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(UUID userId) {
-        return userRepository.findById(userId);
+    public User getUserById(UUID userId) throws UserNotFoundException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
@@ -60,9 +72,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email);
     }
 
-    //@Override
-    //public Optional<User> authenticateUser(String email, String password) {
-    //    return userRepository.findUserByEmail(email)
-    //            .filter(user -> passwordEncoder.matches(password, user.getPassword()));
-    //}
+    @Override
+    public Optional<User> authenticateUser(String email, String password) {
+        return userRepository.findUserByEmail(email)
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()));
+    }
 }

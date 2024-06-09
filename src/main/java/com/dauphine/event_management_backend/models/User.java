@@ -1,12 +1,28 @@
 package com.dauphine.event_management_backend.models;
 
-import java.util.UUID;
+import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @Column(name = "user_id", updatable = false, nullable = false)
     private UUID userId;
+
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Registration> registrations = new HashSet<>();
 
     public UUID getUserId() {
         return userId;

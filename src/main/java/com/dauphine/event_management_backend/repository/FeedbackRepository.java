@@ -10,10 +10,14 @@ import java.util.UUID;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, UUID> {
     // Requête JPQL pour trouver tous les feedbacks associés à un événement spécifique
-    @Query("SELECT f FROM Feedback f WHERE f.eventId = :eventId")
+    @Query("""
+            SELECT f FROM Feedback f WHERE f.event.eventId = :eventId
+""")
     List<Feedback> findFeedbacksByEventId(@Param("eventId") UUID eventId);
 
     // Requête JPQL pour trouver tous les feedbacks donnés par un utilisateur spécifique
-    @Query("SELECT f FROM Feedback f WHERE f.userId = :userId")
+    @Query("""
+            SELECT f FROM Feedback f WHERE f.user.userId = :userId
+""")
     List<Feedback> findFeedbacksByUserId(@Param("userId") UUID userId);
 }

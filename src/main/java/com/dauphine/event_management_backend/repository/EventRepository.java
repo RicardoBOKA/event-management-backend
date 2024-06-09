@@ -10,11 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Event, UUID> {
-    @Query("""
-    SELECT e
-    FROM Event e
-    WHERE e.organizerId = :organizerId
-""")
+    @Query("SELECT e FROM Event e WHERE e.user.userId = :organizerId")
     List<Event> findEventsByOrganizer(@Param("organizerId") UUID organizerId);
 
     @Query("""
@@ -28,4 +24,5 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
                              @Param("endDate") LocalDateTime endDate,
                              @Param("name") String name,
                              @Param("location") String location);
+}
 

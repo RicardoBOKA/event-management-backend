@@ -1,14 +1,40 @@
 package com.dauphine.event_management_backend.models;
 
+import jakarta.persistence.*;
+
 import java.util.UUID;
 
+@Entity
+@Table(name = "feedbacks")
 public class Feedback {
+    @Id
+    @Column(name = "feedback_id", updatable = false, nullable = false)
     private UUID feedbackid;
-    private UUID userId;
-    private UUID eventId;
 
+    // Relation Feedback to Event
+    @ManyToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    private Event event;
+
+    // Relation Feedback to User
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
+    @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
-    private Byte rating;
+    @Column(name = "rating")
+    private Short rating;
+
+    public Feedback(Event event, User user, String comment, Short rating) {
+        this.feedbackid = UUID.randomUUID();
+        this.user = user;
+        this.event = event;
+        this.comment = comment;
+        this.rating = rating;
+    }
+
+    public Feedback() {}
+
     public UUID getFeedbackid() {
         return feedbackid;
     }
@@ -17,22 +43,21 @@ public class Feedback {
         this.feedbackid = feedbackid;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public UUID getEventId() {
-        return eventId;
+    public User getUser() {
+        return user;
     }
 
-    public void setEventId(UUID eventId) {
-        this.eventId = eventId;
+    public void setUser(User user) {
+        this.user = user;
     }
-
 
     public String getComment() {
         return comment;
@@ -42,11 +67,11 @@ public class Feedback {
         this.comment = comment;
     }
 
-    public Byte getRating() {
+    public Short  getRating() {
         return rating;
     }
 
-    public void setRating(Byte rating) {
+    public void setRating(Short  rating) {
         this.rating = rating;
     }
 }

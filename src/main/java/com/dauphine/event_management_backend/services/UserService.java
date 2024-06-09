@@ -1,5 +1,6 @@
 package com.dauphine.event_management_backend.services;
 
+import com.dauphine.event_management_backend.exceptions.UserNotFoundException;
 import com.dauphine.event_management_backend.models.User;
 
 import java.util.Optional;
@@ -8,16 +9,16 @@ import java.util.List;
 
 public interface UserService {
     // Créer un nouvel utilisateur
-    User createUser(User user);
+    User createUser(String userName, String email, String password);
 
     // Mettre à jour un utilisateur existant
-    User updateUser(UUID userId, String userName);
+    User updateUser(UUID userId, String userName) throws UserNotFoundException;
 
     // Supprimer un utilisateur par son ID
-    void deleteUser(UUID userId);
+    void deleteUser(UUID userId) throws UserNotFoundException;
 
     // Récupérer un utilisateur par son ID
-    Optional<User> getUserById(UUID userId);
+    User getUserById(UUID userId) throws UserNotFoundException;
 
     // Récupérer tous les utilisateurs
     List<User> getAllUsers();
@@ -29,5 +30,5 @@ public interface UserService {
     Optional<User> findUserByEmail(String email);
 
     // Authentifier un utilisateur
-    //Optional<User> authenticateUser(String email, String password);
+    Optional<User> authenticateUser(String email, String password);
 }
