@@ -65,20 +65,20 @@ public class UserController {
     }
 
     @GetMapping("/search/by-username")
-    public ResponseEntity<List<User>> findUsersByUsername(@RequestParam String username) {
-        List<User> users = userService.findUsersByUsername(username);
+    public ResponseEntity<List<User>> findUsersByUsername(@RequestParam UserRequest userRequest) {
+        List<User> users = userService.findUsersByUsername(userRequest.getUserName());
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/search/by-email")
-    public ResponseEntity<User> findUserByEmail(@RequestParam String email) {
-        Optional<User> user = userService.findUserByEmail(email);
+    public ResponseEntity<User> findUserByEmail(@RequestParam UserRequest userRequest) {
+        Optional<User> user = userService.findUserByEmail(userRequest.getEmail());
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<User> authenticateUser(@RequestParam String email, @RequestParam String password) {
-        Optional<User> user = userService.authenticateUser(email, password);
+    public ResponseEntity<User> authenticateUser(@RequestBody UserRequest userRequest) {
+        Optional<User> user = userService.authenticateUser(userRequest.getEmail(), userRequest.getPassword());
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 }

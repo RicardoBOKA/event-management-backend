@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Registration {
     @Id
     @Column(name = "registration_id", nullable = false)
-    private UUID registrationid;
+    private UUID registrationId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -25,12 +25,12 @@ public class Registration {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
-    public UUID getRegistrationid() {
-        return registrationid;
+    public UUID getRegistrationId() {
+        return registrationId;
     }
 
-    public void setRegistrationid(UUID registrationid) {
-        this.registrationid = registrationid;
+    public void setRegistrationId(UUID registrationid) {
+        this.registrationId = registrationid;
     }
 
     public User getUser() {

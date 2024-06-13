@@ -29,19 +29,27 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Registration createRegistration(UUID userId, UUID eventId) throws UserNotFoundException, EventNotFoundException {
         // Check if the user exists
+        System.out.println("userIduserId" + userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+
+        System.out.println("eventIdeventId" + eventId);
 
         // Check if the event exists
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-
+        System.out.println("1");
         // Create the registration
         Registration registration = new Registration();
-        registration.setRegistrationid(UUID.randomUUID());
+        System.out.println("2");
+        registration.setRegistrationId(UUID.randomUUID());
+        System.out.println("3");
         registration.setUser(user);
+        System.out.println("3");
         registration.setEvent(event);
+        System.out.println("4");
         registration.setRegistrationDate(java.time.LocalDateTime.now());
+        System.out.println("5");
         return registrationRepository.save(registration);
     }
 

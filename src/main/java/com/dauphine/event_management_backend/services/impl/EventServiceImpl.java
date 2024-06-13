@@ -36,19 +36,38 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event createEvent(String eventName, LocalDateTime createdDate, LocalDateTime startEvent,
                              LocalDateTime endEvent, Location location, String description, UUID organizerId) throws UserNotFoundException {
+        System.out.println("Test ici 1");
+        System.out.println("organizerId : " + organizerId);
         User organizer = userRepository.findById(organizerId)
                 .orElseThrow(() -> new UserNotFoundException(organizerId));
+        System.out.println("Test ici 2");
+
 
         Event event = new Event();
         event.setEventId(UUID.randomUUID());
-        event.setEventName(eventName);
-        event.setCreatedDate(createdDate);
-        event.setStartEvent(startEvent);
-        event.setEndEvent(endEvent);
-        event.setLocation(location.toString());
-        event.setDescription(description);
-        event.setUser(organizer);
+        System.out.println("Test ici 3");
 
+        event.setEventName(eventName);
+        System.out.println("Test ici 4");
+
+        event.setCreatedDate(createdDate);
+        System.out.println("Test ici 5");
+
+        event.setStartEvent(startEvent);
+        System.out.println("Test ici 6");
+
+        event.setEndEvent(endEvent);
+        System.out.println("Test ici 7");
+
+        event.setLocation(location.toString());
+        System.out.println("Test ici 8");
+
+        event.setDescription(description);
+        System.out.println("Test ici 9");
+
+        event.setUser(organizer);
+        System.out.println("Organizer ID : " + event.getUser().getUserId());
+        System.out.println("Event ID : " + event.getEventId());
         return eventRepository.save(event);
     }
 

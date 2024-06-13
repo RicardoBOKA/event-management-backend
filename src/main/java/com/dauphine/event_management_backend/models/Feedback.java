@@ -9,7 +9,7 @@ import java.util.UUID;
 public class Feedback {
     @Id
     @Column(name = "feedback_id", updatable = false, nullable = false)
-    private UUID feedbackid;
+    private UUID feedbackId;
 
     // Relation Feedback to Event
     @ManyToOne
@@ -26,7 +26,7 @@ public class Feedback {
     private Short rating;
 
     public Feedback(Event event, User user, String comment, Short rating) {
-        this.feedbackid = UUID.randomUUID();
+        this.feedbackId = UUID.randomUUID();
         this.user = user;
         this.event = event;
         this.comment = comment;
@@ -35,12 +35,12 @@ public class Feedback {
 
     public Feedback() {}
 
-    public UUID getFeedbackid() {
-        return feedbackid;
+    public UUID getFeedbackId() {
+        return feedbackId;
     }
 
-    public void setFeedbackid(UUID feedbackid) {
-        this.feedbackid = feedbackid;
+    public void setFeedbackId(UUID feedbackid) {
+        this.feedbackId = feedbackid;
     }
 
     public Event getEvent() {

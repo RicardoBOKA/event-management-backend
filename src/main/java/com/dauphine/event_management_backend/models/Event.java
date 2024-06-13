@@ -39,6 +39,10 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private Set<Registration> registrations = new HashSet<>();
 
+    @PrePersist
+    protected void onCreate() {
+        createdDate = LocalDateTime.now();
+    }
 
     public UUID getEventId() {
         return eventId;
