@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class FeedbackRequest {
     private UUID feedbackUserId;
-    private UUID feedbackEventID;
+    private UUID feedbackEventId;
     private String comment;
     private Short rating;
 
@@ -16,12 +16,12 @@ public class FeedbackRequest {
         this.feedbackUserId = feedbackUserId;
     }
 
-    public UUID getFeedbackEventID() {
-        return feedbackEventID;
+    public UUID getFeedbackEventId() {
+        return feedbackEventId;
     }
 
-    public void setFeedbackEventID(UUID feedbackEventID) {
-        this.feedbackEventID = feedbackEventID;
+    public void setFeedbackEventId(UUID feedbackEventId) {
+        this.feedbackEventId = feedbackEventId;
     }
 
     public String getComment() {

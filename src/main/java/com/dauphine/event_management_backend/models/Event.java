@@ -36,7 +36,7 @@ public class Event {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Registration> registrations = new HashSet<>();
 
     @PrePersist

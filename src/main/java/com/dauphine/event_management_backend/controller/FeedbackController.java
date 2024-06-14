@@ -32,8 +32,13 @@ public class FeedbackController {
 
     @PostMapping
     public ResponseEntity<Feedback> addFeedback(@RequestBody FeedbackRequest feedbackRequest) {
+        System.out.println("FeedbackRequest TEST : " + feedbackRequest.getFeedbackUserId());
+        System.out.println("FeedbackRequest TEST : " + feedbackRequest.getFeedbackEventId());
+        System.out.println("FeedbackRequest TEST : " + feedbackRequest.getComment());
+        System.out.println("FeedbackRequest TEST : " + feedbackRequest.getRating());
+
         try {
-            Event event = eventService.findEventById(feedbackRequest.getFeedbackEventID());
+            Event event = eventService.findEventById(feedbackRequest.getFeedbackEventId());
             User user = userService.getUserById(feedbackRequest.getFeedbackUserId());
 
             Short rating = feedbackRequest.getRating() == null ? null : feedbackRequest.getRating().shortValue();

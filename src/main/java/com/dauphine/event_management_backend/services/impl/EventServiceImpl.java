@@ -3,8 +3,11 @@ package com.dauphine.event_management_backend.services.impl;
 import com.dauphine.event_management_backend.exceptions.EventNotFoundException;
 import com.dauphine.event_management_backend.exceptions.UserNotFoundException;
 import com.dauphine.event_management_backend.models.Event;
+import com.dauphine.event_management_backend.models.Registration;
 import com.dauphine.event_management_backend.models.User;
 import com.dauphine.event_management_backend.repository.EventRepository;
+import com.dauphine.event_management_backend.repository.FeedbackRepository;
+import com.dauphine.event_management_backend.repository.RegistrationRepository;
 import com.dauphine.event_management_backend.repository.UserRepository;
 import com.dauphine.event_management_backend.ressources.Location;
 import com.dauphine.event_management_backend.services.EventService;
@@ -18,26 +21,21 @@ import java.util.UUID;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final RegistrationRepository registrationRepository;
+    private final RegistrationServiceImpl registrationService;
 
-    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {
+
+    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository, RegistrationRepository registrationRepository, RegistrationServiceImpl registrationService) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
+        this.registrationRepository = registrationRepository;
+        this.registrationService = registrationService;
     }
-
-    //@Override
-    //public Event createEvent(Event event) throws UserNotFoundException {
-    //    UUID organizerId = event.getUser().getUserId();
-    //    userRepository.findById(organizerId).orElseThrow(() -> new UserNotFoundException(organizerId));
-
-        // Sauvegardez l'événement si l'organisateur est valide
-    //    return eventRepository.save(event);
-    //}
 
     @Override
     public Event createEvent(String eventName, LocalDateTime createdDate, LocalDateTime startEvent,
-                             LocalDateTime endEvent, Location location, String description, UUID organizerId) throws UserNotFoundException {
-        System.out.println("Test ici 1");
-        System.out.println("organizerId : " + organizerId);
+                             LocalDateTime endEvent, Location location, String description, UUID organizerId) throws UserNotFoundException, EventNotFoundException {
+
         User organizer = userRepository.findById(organizerId)
                 .orElseThrow(() -> new UserNotFoundException(organizerId));
         System.out.println("Test ici 2");
@@ -45,46 +43,25 @@ public class EventServiceImpl implements EventService {
 
         Event event = new Event();
         event.setEventId(UUID.randomUUID());
-        System.out.println("Test ici 3");
-
         event.setEventName(eventName);
-        System.out.println("Test ici 4");
-
         event.setCreatedDate(createdDate);
-        System.out.println("Test ici 5");
-
         event.setStartEvent(startEvent);
-        System.out.println("Test ici 6");
-
         event.setEndEvent(endEvent);
-        System.out.println("Test ici 7");
-
         event.setLocation(location.toString());
-        System.out.println("Test ici 8");
-
         event.setDescription(description);
-        System.out.println("Test ici 9");
-
         event.setUser(organizer);
+
         System.out.println("Organizer ID : " + event.getUser().getUserId());
         System.out.println("Event ID : " + event.getEventId());
-        return eventRepository.save(event);
+
+        Event savedEvent = eventRepository.save(event);
+
+        Registration registration = registrationService.createRegistration(organizerId, event.getEventId());
+
+        registrationRepository.save(registration);
+
+        return savedEvent;
     }
-
-    //@Override
-    //public Event updateEvent(UUID eventId, Event updatedEvent) throws EventNotFoundException {
-    //    Event event = eventRepository.findById(eventId)
-    //            .orElseThrow(() -> new EventNotFoundException(eventId));
-
-    //    event.setEventName(updatedEvent.getEventName());
-    //    event.setCreatedDate(updatedEvent.getCreatedDate());
-    //    event.setStartEvent(updatedEvent.getStartEvent());
-    //    event.setEndEvent(updatedEvent.getEndEvent());
-    //    event.setLocation(updatedEvent.getLocation());
-    //    event.setDescription(updatedEvent.getDescription());
-    //    event.setUser(updatedEvent.getUser());
-    //    return eventRepository.save(event);
-    //}
 
     @Override
     public Event updateEvent(UUID eventId, String eventName, LocalDateTime createdDate, LocalDateTime startEvent,

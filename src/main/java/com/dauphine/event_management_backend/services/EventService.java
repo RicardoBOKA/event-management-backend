@@ -14,7 +14,7 @@ public interface EventService {
     //Event createEvent(Event event) throws UserNotFoundException;
 
     Event createEvent(String eventName, LocalDateTime createdDate, LocalDateTime startEvent,
-                      LocalDateTime endEvent, Location location, String description, UUID organizerId) throws UserNotFoundException;
+                      LocalDateTime endEvent, Location location, String description, UUID organizerId) throws UserNotFoundException, EventNotFoundException;
 
     // Update an existing event
     //Event updateEvent(UUID eventId, Event event) throws EventNotFoundException;

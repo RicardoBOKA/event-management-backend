@@ -57,6 +57,8 @@ public class EventController {
                     .body(createdEvent);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (EventNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
