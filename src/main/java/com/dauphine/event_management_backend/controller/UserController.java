@@ -65,14 +65,14 @@ public class UserController {
     }
 
     @GetMapping("/search/by-username")
-    public ResponseEntity<List<User>> findUsersByUsername(@RequestParam UserRequest userRequest) {
-        List<User> users = userService.findUsersByUsername(userRequest.getUserName());
+    public ResponseEntity<List<User>> findUsersByUsername(@RequestParam String userName) {
+        List<User> users = userService.findUsersByUsername(userName);
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/search/by-email")
-    public ResponseEntity<User> findUserByEmail(@RequestParam UserRequest userRequest) {
-        Optional<User> user = userService.findUserByEmail(userRequest.getEmail());
+    public ResponseEntity<User> findUserByEmail(@RequestParam String email) {
+        Optional<User> user = userService.findUserByEmail(email);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

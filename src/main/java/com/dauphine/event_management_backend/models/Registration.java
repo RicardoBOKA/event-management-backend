@@ -49,7 +49,7 @@ public class Registration {
         this.event = event;
     }
 
-    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
@@ -57,4 +57,6 @@ public class Registration {
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+
 }

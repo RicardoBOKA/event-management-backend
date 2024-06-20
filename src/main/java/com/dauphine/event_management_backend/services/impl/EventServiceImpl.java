@@ -114,6 +114,17 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> searchEvents(LocalDateTime startDate, LocalDateTime endDate, String name, String location) {
-        return eventRepository.searchEvents(startDate, endDate, name, location);
+        System.out.println("startDate : " + startDate);
+        List<Event> filtrerEvents =  eventRepository.searchEvents(startDate, endDate, name, location);
+
+        return  filtrerEvents;
     }
+
+    @Override
+    public List<Event> findAllLikeNames(String eventName) {
+        System.out.println("Event name : " + eventName);
+        return eventRepository.findAllLikeNames(eventName);
+    }
+
+
 }

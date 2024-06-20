@@ -35,4 +35,6 @@ public interface EventService {
 
     // Search events based on different criteria such as date, location, name, etc.
     List<Event> searchEvents(LocalDateTime startDate, LocalDateTime endDate, String name, String location);
+
+    List<Event> findAllLikeNames(String eventName);
 }

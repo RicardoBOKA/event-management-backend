@@ -6,11 +6,13 @@ import com.dauphine.event_management_backend.exceptions.EventNotFoundException;
 import com.dauphine.event_management_backend.exceptions.UserNotFoundException;
 import com.dauphine.event_management_backend.models.Event;
 import com.dauphine.event_management_backend.services.EventService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,13 +33,10 @@ public class EventController {
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<Event> getEventById(@PathVariable UUID eventId) {
-        try {
+    public ResponseEntity<Event> getEventById(@PathVariable UUID eventId) throws EventNotFoundException {
             Event event = eventService.findEventById(eventId);
             return ResponseEntity.ok(event);
-        } catch (EventNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+
     }
 
     @PostMapping
@@ -92,5 +91,23 @@ public class EventController {
         } catch (EventNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Event>> searchEvents(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String location) {
+        List<Event> events = eventService.searchEvents(startDate, endDate, name, location);
+        return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/searchName")
+    public ResponseEntity<List<Event>> getAllLikeNames(@RequestParam(required = false) String eventName) {
+        List<Event> events = eventName == null || eventName.isBlank()
+                ? eventService.findAllEvents()
+                : eventService.findAllLikeNames(eventName);
+        return ResponseEntity.ok(events);
     }
 }

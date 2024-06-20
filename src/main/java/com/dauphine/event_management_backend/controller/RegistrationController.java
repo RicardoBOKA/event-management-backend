@@ -37,18 +37,14 @@ public class RegistrationController {
     }
 
     @DeleteMapping("/{registrationId}")
-    public ResponseEntity<Void> cancelRegistration(@PathVariable UUID registrationId) {
-        try {
+    public ResponseEntity<Void> cancelRegistration(@PathVariable UUID registrationId) throws RegistrationNotFoundException {
+
             Registration registration = registrationService.getRegistrationById(registrationId)
                     .orElseThrow(() -> new RegistrationNotFoundException(registrationId));
 
             registrationService.cancelRegistration(registrationId);
             return ResponseEntity.noContent().build();
 
-        } catch (RegistrationNotFoundException e) {
-            // Renvoie une réponse 404 Not Found si l'inscription n'est pas trouvée
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
     }
 
 

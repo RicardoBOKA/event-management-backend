@@ -74,4 +74,6 @@ public class Feedback {
     public void setRating(Short  rating) {
         this.rating = rating;
     }
+
+
 }

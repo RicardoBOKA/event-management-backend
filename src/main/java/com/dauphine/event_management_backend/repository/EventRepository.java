@@ -15,14 +15,23 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     @Query("""
     SELECT e FROM Event e
-    WHERE (:startDate IS NULL OR e.startEvent >= :startDate)
-    AND (:endDate IS NULL OR e.endEvent <= :endDate)
-    AND (:name IS NULL OR LOWER(e.eventName) LIKE LOWER(CONCAT('%', :name, '%')))
+    WHERE (cast(:startDate AS date) IS NULL OR e.startEvent >= :startDate)
+    AND (cast(:endDate AS date) IS NULL OR e.endEvent <= :endDate)
+    AND (:name IS NULL OR e.eventName LIKE :name)
     AND (:location IS NULL OR e.location = :location)
 """)
     List<Event> searchEvents(@Param("startDate") LocalDateTime startDate,
                              @Param("endDate") LocalDateTime endDate,
                              @Param("name") String name,
                              @Param("location") String location);
+
+
+
+    @Query("""
+        SELECT e
+        FROM Event e
+        WHERE UPPER(e.eventName) LIKE UPPER(CONCAT('%', :name, '%'))
+""")
+    List<Event> findAllLikeNames(@Param("name") String name);
 }
 

@@ -48,7 +48,7 @@ public class Event {
         return eventId;
     }
 
-    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getStartEvent() {
         return startEvent;
     }
@@ -57,7 +57,7 @@ public class Event {
         this.startEvent = startEvent;
     }
 
-    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getEndEvent() {
         return endEvent;
     }
@@ -78,7 +78,7 @@ public class Event {
         this.eventName = eventName;
     }
 
-    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -110,4 +110,6 @@ public class Event {
     public void setUser(User user) {
         this.user = user;
     }
+
+
 }
