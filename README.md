@@ -1,5 +1,3 @@
-﻿# event-management-backend
-
 ### README
 
 # Event Management Backend
