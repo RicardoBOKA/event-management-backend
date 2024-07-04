@@ -86,11 +86,9 @@ public interface EventService {
      *
      * @param startDate the start date for the search
      * @param endDate   the end date for the search
-     * @param name      the name of the event to search for
-     * @param location  the location of the event to search for
      * @return the list of events matching the search criteria
      */
-    List<Event> searchEvents(LocalDateTime startDate, LocalDateTime endDate, String name, String location);
+    List<Event> searchEvents(LocalDateTime startDate, LocalDateTime endDate);
     /**
      * Finds all events with names similar to the given name.
      *

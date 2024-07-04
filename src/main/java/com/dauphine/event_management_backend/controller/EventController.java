@@ -129,17 +129,13 @@ public class EventController {
      *
      * @param startDate the start date of the event.
      * @param endDate the end date of the event.
-     * @param name the name of the event.
-     * @param location the location of the event.
      * @return a list of events matching the search criteria.
      */
     @GetMapping("/search")
     public ResponseEntity<List<Event>> searchEvents(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String location) {
-        List<Event> events = eventService.searchEvents(startDate, endDate, name, location);
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+        List<Event> events = eventService.searchEvents(startDate, endDate);
         return ResponseEntity.ok(events);
     }
     /**

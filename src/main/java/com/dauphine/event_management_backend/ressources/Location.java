@@ -1,8 +1,5 @@
 package com.dauphine.event_management_backend.ressources;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Column;
-
 public class Location {
     private String addressLine;
 
