@@ -194,7 +194,7 @@ mvn test
 - **Search Events**
   - **URL:** `/v1/events/search`
   - **Method:** `GET`
-  - **Parameters:** `startDate`, `endDate`, `name`, `location`
+  - **Parameters:** `startDate`, `endDate`
 
 ### Registration Management
 
@@ -276,26 +276,12 @@ mvn test
   - **URL:** `/v1/feedback/user/{userId}`
   - **Method:** `GET`
 
-- **Update Feedback**
-  - **URL:** `/v1/feedback/{feedbackId}`
-  - **Method:** `PUT`
-  - **Request Body:**
-    ```json
-    {
-      "comment": "This is an updated feedback comment.",
-      "rating": 4
-    }
-    ```
-
 - **Delete Feedback**
   - **URL:** `/v1/feedback/{feedbackId}`
   - **Method:** `DELETE`
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ---
 
