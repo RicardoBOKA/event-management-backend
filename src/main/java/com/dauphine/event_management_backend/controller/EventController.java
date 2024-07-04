@@ -15,30 +15,51 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * Controller for handling requests related to events.
+ */
 @RestController
 @RequestMapping("/v1/events")
 public class EventController {
 
     private final EventService eventService;
-
+    /**
+     * Constructor to initialize EventService.
+     *
+     * @param eventService the event service to be used.
+     */
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
-
+    /**
+     * Retrieve all events.
+     *
+     * @return a list of all events.
+     */
     @GetMapping
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventService.findAllEvents();
         return ResponseEntity.ok(events);
     }
-
+    /**
+     * Retrieve an event by its ID.
+     *
+     * @param eventId the UUID of the event to be retrieved.
+     * @return the event with the specified ID.
+     * @throws EventNotFoundException if the event is not found.
+     */
     @GetMapping("/{eventId}")
     public ResponseEntity<Event> getEventById(@PathVariable UUID eventId) throws EventNotFoundException {
             Event event = eventService.findEventById(eventId);
             return ResponseEntity.ok(event);
 
     }
-
+    /**
+     * Create a new event.
+     *
+     * @param eventRequest the event request containing event details.
+     * @return the created event.
+     */
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody EventRequest eventRequest) {
         try {
@@ -60,7 +81,13 @@ public class EventController {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Update an existing event.
+     *
+     * @param eventId the UUID of the event to be updated.
+     * @param eventRequest the event request containing updated event details.
+     * @return the updated event.
+     */
     @PutMapping("/{eventId}")
     public ResponseEntity<Event> updateEvent(@PathVariable UUID eventId, @RequestBody EventRequest eventRequest) {
         try {
@@ -82,7 +109,12 @@ public class EventController {
         }
     }
 
-
+    /**
+     * Delete an event by its ID.
+     *
+     * @param eventId the UUID of the event to be deleted.
+     * @return a response indicating the result of the deletion.
+     */
     @DeleteMapping("/{eventId}")
     public ResponseEntity<Void> deleteEvent(@PathVariable UUID eventId) {
         try {
@@ -92,7 +124,15 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    /**
+     * Search for events based on various criteria.
+     *
+     * @param startDate the start date of the event.
+     * @param endDate the end date of the event.
+     * @param name the name of the event.
+     * @param location the location of the event.
+     * @return a list of events matching the search criteria.
+     */
     @GetMapping("/search")
     public ResponseEntity<List<Event>> searchEvents(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
@@ -102,7 +142,12 @@ public class EventController {
         List<Event> events = eventService.searchEvents(startDate, endDate, name, location);
         return ResponseEntity.ok(events);
     }
-
+    /**
+     * Retrieve all events with names similar to the specified name.
+     *
+     * @param eventName the name of the event to search for.
+     * @return a list of events with names similar to the specified name.
+     */
     @GetMapping("/searchName")
     public ResponseEntity<List<Event>> getAllLikeNames(@RequestParam(required = false) String eventName) {
         List<Event> events = eventName == null || eventName.isBlank()

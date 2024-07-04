@@ -12,17 +12,28 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * Controller for handling requests related to registrations.
+ */
 @RestController
 @RequestMapping("/v1/registrations")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
-
+    /**
+     * Constructor to initialize the registration service.
+     *
+     * @param registrationService the registration service to be used.
+     */
     public RegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
-
+    /**
+     * Create a new registration.
+     *
+     * @param registrationRequest the registration request containing user and event IDs.
+     * @return the created registration.
+     */
     @PostMapping
     public ResponseEntity<Registration> createRegistration(@RequestBody RegistrationRequest registrationRequest) {
         try {
@@ -35,7 +46,13 @@ public class RegistrationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
+    /**
+     * Cancel an existing registration.
+     *
+     * @param registrationId the UUID of the registration to be cancelled.
+     * @return a response indicating the result of the cancellation.
+     * @throws RegistrationNotFoundException if the registration is not found.
+     */
     @DeleteMapping("/{registrationId}")
     public ResponseEntity<Void> cancelRegistration(@PathVariable UUID registrationId) throws RegistrationNotFoundException {
 
@@ -46,15 +63,24 @@ public class RegistrationController {
             return ResponseEntity.noContent().build();
 
     }
-
-
+    /**
+     * Retrieve a registration by its ID.
+     *
+     * @param registrationId the UUID of the registration to be retrieved.
+     * @return the registration with the specified ID.
+     */
     @GetMapping("/{registrationId}")
     public ResponseEntity<Registration> getRegistrationById(@PathVariable UUID registrationId) {
         return registrationService.getRegistrationById(registrationId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    /**
+     * Retrieve registrations by event ID.
+     *
+     * @param eventId the UUID of the event.
+     * @return a list of registrations for the specified event.
+     */
     @GetMapping("/event/{eventId}")
     public ResponseEntity<List<Registration>> getRegistrationsByEventId(@PathVariable UUID eventId) {
         try {
@@ -67,7 +93,12 @@ public class RegistrationController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    /**
+     * Retrieve registrations by user ID.
+     *
+     * @param userId the UUID of the user.
+     * @return a list of registrations for the specified user.
+     */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Registration>> getRegistrationsByUserId(@PathVariable UUID userId) {
         try {
@@ -80,6 +111,13 @@ public class RegistrationController {
             return ResponseEntity.notFound().build();
         }
     }
+    /**
+     * Check if a user is registered for an event.
+     *
+     * @param userId the UUID of the user.
+     * @param eventId the UUID of the event.
+     * @return a boolean indicating whether the user is registered for the event.
+     */
     @GetMapping("/check")
     public ResponseEntity<Boolean> isUserRegistered(@RequestParam UUID userId, @RequestParam UUID eventId) {
         try {
