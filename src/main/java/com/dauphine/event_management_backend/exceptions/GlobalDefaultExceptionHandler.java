@@ -22,4 +22,20 @@ public class GlobalDefaultExceptionHandler {
                 .status(404)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        logger.warn("[CONFLICT] {}", ex.getMessage());
+        return ResponseEntity
+                .status(409)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleBadRequestException(IllegalArgumentException ex) {
+        logger.warn("[BAD REQUEST] {}", ex.getMessage());
+        return ResponseEntity
+                .status(400)
+                .body(ex.getMessage());
+    }
 }

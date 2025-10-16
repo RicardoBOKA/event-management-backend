@@ -4,6 +4,8 @@ import com.dauphine.event_management_backend.dto.UserRequest;
 import com.dauphine.event_management_backend.exceptions.UserNotFoundException;
 import com.dauphine.event_management_backend.models.User;
 import com.dauphine.event_management_backend.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
     /**
@@ -35,7 +38,9 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest) {
+        logger.info("[API] POST /v1/users - Création d'un nouvel utilisateur");
         User createdUser = userService.createUser(userRequest.getUserName(), userRequest.getEmail(), userRequest.getPassword());
+        logger.info("[API] POST /v1/users - Utilisateur créé avec succès (ID: {})", createdUser.getUserId());
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
     /**
@@ -124,7 +129,16 @@ public class UserController {
      */
     @PostMapping("/authenticate")
     public ResponseEntity<User> authenticateUser(@RequestBody UserRequest userRequest) {
+        logger.info("[API] POST /v1/users/authenticate - Tentative d'authentification");
+        
         Optional<User> user = userService.authenticateUser(userRequest.getEmail(), userRequest.getPassword());
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+        
+        if (user.isPresent()) {
+            logger.info("[API] POST /v1/users/authenticate - Authentification réussie pour l'utilisateur ID: {}", user.get().getUserId());
+            return ResponseEntity.ok(user.get());
+        } else {
+            logger.warn("[API] POST /v1/users/authenticate - Authentification échouée - identifiants invalides");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
