@@ -15,7 +15,7 @@ This project is a backend application for managing events, registrations, feedba
 - Java
 - Spring Boot
 - Spring Data JPA
-- Database ElephantSQL (for development)
+- Database Supabase
 - Maven
 
 ## Getting Started
